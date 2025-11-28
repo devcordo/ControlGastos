@@ -1,0 +1,53 @@
+<h1>Agragrar Fondos Monetarios</h1>
+<div class="form-container">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="editingFondo.nombre" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo</mat-label>
+    <mat-select [(ngModel)]="editingFondo.tipo">
+      <mat-option value="Cuenta Bancaria">Cuenta Bancaria</mat-option>
+      <mat-option value="Caja Menuda">Caja Menuda</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="guardar()">
+    Guardar
+  </button>
+
+</div>
+
+<h1>Fondos Monetarios</h1>
+<div class="table-container">
+  <table mat-table [dataSource]="fondos" class="mat-elevation-z8">
+  
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let row"> {{ row.nombre }} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let row"> {{ row.tipo }} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminar(row.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+  </table>
+</div>

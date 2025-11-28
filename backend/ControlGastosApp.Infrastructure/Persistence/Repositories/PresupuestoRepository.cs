@@ -16,6 +16,9 @@ namespace ControlGastosApp.Infrastructure.Persistence.Repositories
             return entity;
         }
 
+        public async Task<IEnumerable<Presupuesto?>> GetByMesAnioAsync(int mes, int anio) =>
+            await _db.Presupuestos.AsNoTracking().Where(p => p.Mes == mes && p.Anio == anio).ToListAsync();
+
         public async Task<Presupuesto?> GetByTipoMesAnioAsync(int tipoGastoId, int mes, int anio) =>
             await _db.Presupuestos.AsNoTracking().FirstOrDefaultAsync(p => p.TipoGastoId == tipoGastoId && p.Mes == mes && p.Anio == anio);
 
@@ -35,9 +38,7 @@ namespace ControlGastosApp.Infrastructure.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Presupuesto>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Presupuesto>> GetAllAsync() => 
+            await _db.Presupuestos.AsNoTracking().ToListAsync();
     }
 }

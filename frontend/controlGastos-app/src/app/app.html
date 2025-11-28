@@ -1,0 +1,41 @@
+<header>
+  <h1>Control Gastos App</h1>
+  <nav>
+    <mat-toolbar color="primary" class="mat-menu-container">    
+        <button matButton [matMenuTriggerFor]="mantenimiento">{{ buttonOptions.mantenimientos.text }}</button>
+        <mat-menu #mantenimiento="matMenu">
+          <button mat-menu-item (click)="buttonOptions.tiposGasto.onClick()">
+            {{ buttonOptions.tiposGasto.text }}
+          </button>
+          <button mat-menu-item (click)="buttonOptions.fondoMonetario.onClick()">
+            {{ buttonOptions.fondoMonetario.text }}
+          </button>
+        </mat-menu>
+        <button matButton [matMenuTriggerFor]="movimientos">{{ buttonOptions.movimientosMenu.text }}</button>
+        <mat-menu #movimientos="matMenu">
+          <button mat-menu-item (click)="buttonOptions.presupuesto.onClick()">
+            {{ buttonOptions.presupuesto.text }}
+          </button>
+          <button mat-menu-item (click)="buttonOptions.registroGastos.onClick()">
+            {{ buttonOptions.registroGastos.text }}
+          </button>
+          <button mat-menu-item (click)="buttonOptions.depositos.onClick()">
+            {{ buttonOptions.depositos.text }}
+          </button>
+        </mat-menu>
+        <button matButton [matMenuTriggerFor]="reportes">{{ buttonOptions.reportes.text }}</button>  
+        <mat-menu #reportes="matMenu">
+          <button mat-menu-item (click)="buttonOptions.movimientos.onClick()">
+            {{ buttonOptions.movimientos.text }}
+          </button>
+          <button mat-menu-item (click)="buttonOptions.grafico.onClick()">
+            {{ buttonOptions.grafico.text }}
+          </button>
+        </mat-menu>
+    </mat-toolbar>
+  </nav>
+</header>
+
+<main class="main">
+  <router-outlet></router-outlet>
+</main>

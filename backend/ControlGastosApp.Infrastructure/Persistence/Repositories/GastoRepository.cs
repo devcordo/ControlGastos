@@ -35,7 +35,7 @@ namespace ControlGastosApp.Infrastructure.Persistence.Repositories
         {
             var query = from e in _db.GastosEncabezado
                         join d in _db.GastosDetalle on e.Id equals d.GastoEncabezadoId
-                        where e.Fecha >= desde && e.Fecha <= hasta
+                        where e.Fecha.Date >= desde.Date && e.Fecha.Date <= hasta.Date
                         select new { Enc = e, Det = d };
 
             var list = await query.ToListAsync();

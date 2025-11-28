@@ -2,6 +2,7 @@
 using ControlGastosApp.Application.Interfaces;
 using ControlGastosApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace ControlGastosApp.Api.Controllers.V1
 {
@@ -20,36 +21,49 @@ namespace ControlGastosApp.Api.Controllers.V1
         }
 
         [HttpGet("Movimientos")]
-        public async Task<IActionResult> Movimientos([FromQuery] DateTime desde, [FromQuery] DateTime hasta, [FromServices] IGastoRepository gastoRepo, [FromServices] IDepositoRepository depositoRepo)
+        public async Task<IActionResult> Movimientos([FromQuery] DateTime desde, [FromQuery] DateTime hasta, [FromServices] IGastoRepository gastoRepo, [FromServices] IDepositoRepository depositoRepo, [FromServices] IFondoRepository fondoRepo)
         {
             var gastos = await gastoRepo.GetMovimientoByDateRangeAsync(desde, hasta);
             var depositos = await depositoRepo.GetByDateRangeAsync(desde, hasta);
 
-            var movimientos = new List<object>();
+            var movimientos = new List<MovimientoDto>();
 
-            movimientos.AddRange(gastos.Select(g => new
+            foreach (var g in gastos)
             {
-                Fecha = g.Item1.Fecha,
-                Tipo = "Gasto",
-                FondoId = g.Item1.FondoMonetarioId,
-                Monto = g.Item2.Monto,
-                TipoGastoId = g.Item2.TipoGastoId,
-                Comercio = g.Item1.NombreComercio,
-                Observaciones = g.Item1.Observaciones
-            }));
+                var f = await fondoRepo.GetByIdAsync(g.Item1.FondoMonetarioId);
 
-            movimientos.AddRange(depositos.Select(d => new
+                movimientos.Add(new MovimientoDto
+                {
+                    Fecha = g.Item1.Fecha,
+                    Tipo = "Gasto",
+                    Fondo = f?.Nombre,
+                    Monto = g.Item2.Monto,
+                    TipoGastoId = g.Item2.TipoGastoId,
+                    Comercio = g.Item1.NombreComercio,
+                    Documento = g.Item1.TipoDocumento,
+                    Observaciones = g.Item1.Observaciones
+                });
+            }
+
+            foreach (var d in depositos)
             {
-                Fecha = d.Fecha,
-                Tipo = "Deposito",
-                FondoId = d.FondoMonetarioId,
-                Monto = d.Monto,
-                TipoGastoId = (int?)null,
-                Comercio = (string?)null,
-                Observaciones = (string?)null
-            }));
+                var f = await fondoRepo.GetByIdAsync(d.FondoMonetarioId);
 
-            var ordered = movimientos.OrderBy(m => ((DateTime)m.GetType().GetProperty("Fecha")!.GetValue(m)!)).ToList();
+                movimientos.Add(new MovimientoDto
+                {
+                    Fecha = d.Fecha,
+                    Tipo = "Deposito",
+                    Fondo = f?.Nombre,
+                    Monto = d.Monto,
+                    TipoGastoId = null,
+                    Comercio = string.Empty,
+                    Documento = string.Empty,
+                    Observaciones = string.Empty
+                });
+            }
+
+            var ordered = movimientos.OrderBy(m => m.Fecha).ToList();
+
             return Ok(ordered);
         }
     }

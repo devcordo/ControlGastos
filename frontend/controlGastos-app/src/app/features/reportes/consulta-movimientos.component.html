@@ -1,0 +1,55 @@
+<div class="form-container">
+  <div class="filtros">
+    <mat-form-field appearance="outline">
+      <mat-label>Desde</mat-label>
+      <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaInicio">
+      <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDesde></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Hasta</mat-label>
+      <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaFin">
+      <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+      <mat-datepicker #pickerHasta></mat-datepicker>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" (click)="buscar()">Buscar</button>
+  </div>
+</div>
+
+<table mat-table [dataSource]="movimientos" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+    <td mat-cell *matCellDef="let element"> {{ element.fecha | date:'shortDate' }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tipo">
+    <th mat-header-cell *matHeaderCellDef> Tipo </th>
+    <td mat-cell *matCellDef="let element"> {{ element.tipo }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fondoMonetario">
+    <th mat-header-cell *matHeaderCellDef> Fondo Monetario </th>
+    <td mat-cell *matCellDef="let element"> {{ element.fondo }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="nombreComercio">
+    <th mat-header-cell *matHeaderCellDef> Comercio </th>
+    <td mat-cell *matCellDef="let element"> {{ element.comercio }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tipoDocumento">
+    <th mat-header-cell *matHeaderCellDef> Documento </th>
+    <td mat-cell *matCellDef="let element"> {{ element.documento }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="monto">
+    <th mat-header-cell *matHeaderCellDef> Monto </th>
+    <td mat-cell *matCellDef="let element"> {{ element.monto | currency }} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+</table>

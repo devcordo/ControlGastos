@@ -28,7 +28,18 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", p => p.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+    options.AddPolicy("AllowAngular", p => 
+        p
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+
+    options.AddPolicy("AllowLAN", p => 
+        p
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+     );
 });
 
 builder.Services.AddControllers();
@@ -41,7 +52,7 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControlGast
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("AllowAngular");
+app.UseCors("AllowLAN");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

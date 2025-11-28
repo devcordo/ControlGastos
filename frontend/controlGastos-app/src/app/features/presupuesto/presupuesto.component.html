@@ -1,0 +1,90 @@
+<h1>Agregar presupuesto mes</h1>
+<div class="form-container">
+  <form>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Monto</mat-label>
+      <input matInput
+             type="number"
+             name="monto"
+             required
+             [(ngModel)]="editingPresupuesto.monto">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Año</mat-label>
+      <mat-select name="anio" required [(ngModel)]="editingPresupuesto.anio">
+        <mat-option *ngFor="let a of anios" [value]="a">
+          {{ a }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Mes</mat-label>
+      <mat-select name="mes" required [(ngModel)]="editingPresupuesto.mes">
+        <mat-option *ngFor="let m of meses" [value]="m.value">
+          {{ m.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Categoría</mat-label>
+      <mat-select name="tipoGastoId" required [(ngModel)]="editingPresupuesto.tipoGastoId">
+        <mat-option *ngFor="let c of tiposGasto" [value]="c.id">
+          {{ c.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="guardar()">
+      Guardar
+    </button>
+
+  </form>
+</div>
+
+<h1>Presupuesto mes</h1>
+<div class="table-container">
+  <table mat-table [dataSource]="presupuestos" class="mat-elevation-z2 full-width">
+    <ng-container matColumnDef="mes">
+      <th mat-header-cell *matHeaderCellDef>Mes</th>
+      <td mat-cell *matCellDef="let row">{{ getNombreMes(row.mes) }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="anio">
+      <th mat-header-cell *matHeaderCellDef>Año</th>
+      <td mat-cell *matCellDef="let row">{{ row.anio }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="categoria">
+      <th mat-header-cell *matHeaderCellDef>Categoría</th>
+      <td mat-cell *matCellDef="let row">{{ getCategoria(row.tipoGastoId) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="monto">
+      <th mat-header-cell *matHeaderCellDef>Monto</th>
+      <td mat-cell *matCellDef="let row">{{ row.monto | currency:'USD' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let row">
+
+        <button mat-icon-button color="primary" (click)="editar(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="eliminar(row.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="[ 'mes','anio', 'categoria','monto','acciones']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['mes','anio', 'categoria','monto','acciones'];"></tr>
+
+  </table>
+</div>

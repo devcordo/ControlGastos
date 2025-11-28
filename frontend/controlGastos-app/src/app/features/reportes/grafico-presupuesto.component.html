@@ -1,0 +1,29 @@
+<div class="form-container">
+    <div class="filtros">
+      <mat-form-field appearance="outline">
+        <mat-label>Desde</mat-label>
+        <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaInicio">
+        <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDesde></mat-datepicker>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Hasta</mat-label>
+        <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaFin">
+        <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+        <mat-datepicker #pickerHasta></mat-datepicker>
+      </mat-form-field>
+    
+      <button mat-raised-button color="primary" (click)="cargarGrafico()">Generar Gráfico</button>
+    </div>
+
+    <div class="grafico-container">        
+        <div class="grafico-item">
+            <canvas id="graficoPresupuestoEjecucion"></canvas>
+        </div>
+
+        <div class="grafico-item">
+            <canvas id="graficoPresupuesto"></canvas>
+        </div>
+    </div>
+</div>

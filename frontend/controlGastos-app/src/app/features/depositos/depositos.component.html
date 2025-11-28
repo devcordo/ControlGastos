@@ -1,0 +1,73 @@
+<h1>Agregar Deposito</h1>
+<div class="form-container">
+    <form [formGroup]="presupuestoForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha</mat-label>
+          <input
+            matInput
+            name="fecha"
+            formControlName="fecha"
+            [matDatepicker]="picker"
+            [(ngModel)]="deposito.fecha"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Fondo Monetario</mat-label>
+          <mat-select name="fondo" formControlName="fondo" [(ngModel)]="deposito.fondoMonetarioId">
+            <mat-option *ngFor="let f of fondos" [value]="f.id">
+              {{ f.nombre }} - {{ f.tipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Monto</mat-label>
+          <input type="number" matInput name="monto" formControlName="monto" [(ngModel)]="deposito.monto" />
+        </mat-form-field>
+      
+        <button mat-raised-button color="primary" (click)="guardar()">
+          Guardar
+        </button>
+    </form>
+</div>
+
+<h1>Depositos</h1>
+<table mat-table [dataSource]="depositos" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.fecha | date:'yyyy-MM-dd' }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fondo">
+    <th mat-header-cell *matHeaderCellDef> Fondo Monetario </th>
+    <td mat-cell *matCellDef="let row">
+      {{ getNombreFondo(row.fondoMonetarioId) }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="monto">
+    <th mat-header-cell *matHeaderCellDef> Monto </th>
+    <td mat-cell *matCellDef="let row"> {{ row.monto }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let row">
+
+      <button mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>

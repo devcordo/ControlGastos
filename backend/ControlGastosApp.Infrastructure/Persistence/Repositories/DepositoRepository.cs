@@ -16,10 +16,8 @@ namespace ControlGastosApp.Infrastructure.Persistence.Repositories
             return deposito;
         }
 
-        public Task<IEnumerable<Deposito>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Deposito>> GetAllAsync() =>
+            await _db.Depositos.AsNoTracking().ToListAsync();
 
         public async Task<IEnumerable<Deposito>> GetByDateRangeAsync(DateTime desde, DateTime hasta) => 
             await _db.Depositos.Where(d => d.Fecha >= desde && d.Fecha <= hasta).ToListAsync();
